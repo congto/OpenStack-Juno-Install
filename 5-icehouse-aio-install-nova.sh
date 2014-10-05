@@ -57,26 +57,38 @@ enable_instance_password = True
 libvirt_inject_partition = -1
 
 network_api_class = nova.network.neutronv2.api.API
-neutron_url = http://$MASTER:9696
-neutron_auth_strategy = keystone
-neutron_admin_tenant_name = service
-neutron_admin_username = neutron
-neutron_admin_password = $ADMIN_PASS
-neutron_admin_auth_url = http://$MASTER:35357/v2.0
+# neutron_url = http://$MASTER:9696
+# neutron_auth_strategy = keystone
+# neutron_admin_tenant_name = service
+# neutron_admin_username = neutron
+# neutron_admin_password = $ADMIN_PASS
+# neutron_admin_auth_url = http://$MASTER:35357/v2.0
 linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 security_group_api = neutron
-service_neutron_metadata_proxy = true
-neutron_metadata_proxy_shared_secret = $METADATA_SECRET
- 
+# service_neutron_metadata_proxy = true
+# neutron_metadata_proxy_shared_secret = $METADATA_SECRET
+
+[neutron]
+service_metadata_proxy = True
+metadata_proxy_shared_secret = $METADATA_SECRET
+url = http://$MASTER:9696
+auth_strategy = keystone
+admin_auth_url = http://$MASTER:35357/v2.0
+admin_tenant_name = service
+admin_username = neutron
+admin_password = $ADMIN_PASS
  
 [database]
 connection = mysql://nova:$MYSQL_PASS@$MASTER/nova
  
 [keystone_authtoken]
-auth_uri = http://$MASTER:5000
-auth_host = $MASTER
-auth_port = 35357
+# auth_uri = http://$MASTER:5000
+# auth_host = $MASTER
+# auth_port = 35357
+
+auth_uri = http://$MASTER:5000/v2.0
+identity_uri = http://$MASTER:35357
 auth_protocol = http
 admin_tenant_name = service
 admin_user = nova
