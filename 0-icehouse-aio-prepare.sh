@@ -87,15 +87,15 @@ apt-get install -y ntp
 # fudge 127.127.1.0 stratum 10/g' /etc/ntp.conf
 
 ## Cau hinh NTP trong JUNO
-sed -e 's/server ntp.ubuntu.com/ \
+sed -i 's/server ntp.ubuntu.com/ \
 server 0.vn.pool.ntp.org iburst \
 server 1.asia.pool.ntp.org iburst \
 server 2.asia.pool.ntp.org iburst/g' /etc/ntp.conf
 
-sed -e 's/restrict -4 default kod notrap nomodify nopeer noquery/ \
+sed -i 's/restrict -4 default kod notrap nomodify nopeer noquery/ \
 #restrict -4 default kod notrap nomodify nopeer noquery/g' /etc/ntp.conf
 
-sed -e 's/restrict -6 default kod notrap nomodify nopeer noquery/ \
+sed -i 's/restrict -6 default kod notrap nomodify nopeer noquery/ \
 restrict -4 default kod notrap nomodify \
 restrict -6 default kod notrap nomodify/g' /etc/ntp.conf
 
