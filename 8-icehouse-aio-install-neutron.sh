@@ -14,6 +14,7 @@ test -f $controlneutron.orig || cp $controlneutron $controlneutron.orig
 rm $controlneutron
 cat << EOF > $controlneutron
 [DEFAULT]
+verbose = True
 state_path = /var/lib/neutron
 lock_path = \$state_path/lock
 core_plugin = ml2
@@ -30,10 +31,11 @@ notification_driver = neutron.openstack.common.notifier.rpc_notifier
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 nova_url = http://$MASTER:8774/v2
+nova_admin_auth_url = http://$MASTER:35357/v2.0
+nova_region_name = RegionOne
 nova_admin_username = nova
 nova_admin_tenant_id = $SERVICE_ID
 nova_admin_password = $ADMIN_PASS
-nova_admin_auth_url = http://$MASTER:35357/v2.0
 
 [quotas]
 
@@ -41,9 +43,12 @@ nova_admin_auth_url = http://$MASTER:35357/v2.0
 root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 [keystone_authtoken]
-auth_host = 127.0.0.1
-auth_port = 35357
-auth_protocol = http
+# auth_host = 127.0.0.1
+# auth_port = 35357
+# auth_protocol = http
+
+auth_uri = http://$MASTER:5000/v2.0
+identity_uri = http://$MASTER:35357
 admin_tenant_name = service
 admin_user = neutron
 admin_password = $ADMIN_PASS
@@ -57,7 +62,6 @@ service_provider=VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVP
 
 EOF
 
-
 ######## SAO LUU CAU HINH ML2 CHO CONTROLLER##################"
 echo "########## Sau file cau hinh cho ml2_conf.ini ##########"
 sleep 7
@@ -68,11 +72,12 @@ rm $controlML2
 
 cat << EOF > $controlML2
 [ml2]
-type_drivers = gre
+type_drivers = flat,gre
 tenant_network_types = gre
 mechanism_drivers = openvswitch
 
 [ml2_type_flat]
+flat_networks = external
 
 [ml2_type_vlan]
 
@@ -89,27 +94,24 @@ firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewal
 local_ip = $LOCAL_IP
 tunnel_type = gre
 enable_tunneling = True
+bridge_mappings = external:br-ex
 
 EOF
 
-
-######## SAO LUU CAU HINH METADATA CHO CONTROLLER##################"
-echo "########## Sua file cau hinh metadata_agent.ini ##########"
+###################### SAO LUU CAU HINH L3 ###########################"
+echo "########## Sua file cau hinh l3_agent.ini ##########"
 sleep 7
 
-metadatafile=/etc/neutron/metadata_agent.ini
-test -f $metadatafile.orig || cp $metadatafile $metadatafile.orig
-rm $metadatafile
-cat << EOF > $metadatafile
+
+l3file=/etc/neutron/l3_agent.ini
+test -f $l3file.orig || cp $l3file $l3file.orig
+rm $l3file
+touch $l3file
+cat << EOF >> $l3file
 [DEFAULT]
 verbose = True 
-auth_url = http://localhost:5000/v2.0
-auth_region = RegionOne
-admin_tenant_name = service
-admin_user = neutron
-admin_password = $ADMIN_PASS
-nova_metadata_ip = $MASTER
-metadata_proxy_shared_secret = $METADATA_SECRET
+interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
+use_namespaces = True
 
 EOF
 
@@ -129,20 +131,23 @@ use_namespaces = True
 
 EOF
 
-###################### SAO LUU CAU HINH L3 ###########################"
-echo "########## Sua file cau hinh l3_agent.ini ##########"
+######## SAO LUU CAU HINH METADATA CHO CONTROLLER##################"
+echo "########## Sua file cau hinh metadata_agent.ini ##########"
 sleep 7
 
-
-l3file=/etc/neutron/l3_agent.ini
-test -f $l3file.orig || cp $l3file $l3file.orig
-rm $l3file
-touch $l3file
-cat << EOF >> $l3file
+metadatafile=/etc/neutron/metadata_agent.ini
+test -f $metadatafile.orig || cp $metadatafile $metadatafile.orig
+rm $metadatafile
+cat << EOF > $metadatafile
 [DEFAULT]
 verbose = True 
-interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
-use_namespaces = True
+auth_url = http://localhost:5000/v2.0
+auth_region = RegionOne
+admin_tenant_name = service
+admin_user = neutron
+admin_password = $ADMIN_PASS
+nova_metadata_ip = $MASTER
+metadata_proxy_shared_secret = $METADATA_SECRET
 
 EOF
 
