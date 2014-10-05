@@ -11,7 +11,10 @@ echo mysql-server mysql-server/root_password_again password $MYSQL_ADMIN_PASS | 
 
 echo "########## Cai dat MYSQL ##########"
 sleep 3 
-apt-get -y install mysql-server python-mysqldb curl expect 
+# apt-get -y install mysql-server python-mysqldb curl expect 
+apt-get -y install mariadb-server python-mysqldb curl expect 
+
+
 mysql_install_db
 SECURE_MYSQL=$(expect -c "
  
