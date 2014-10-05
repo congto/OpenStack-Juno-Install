@@ -80,14 +80,25 @@ echo "########## Cai dat & cau hinh NTP ##########"
 sleep 3
 apt-get install -y ntp
 
-# Update /etc/ntp.conf file
-# Here we set ntp.ubuntu.com as the direct source of time.
-# You will also find that a local time source 
-# is also provided in case of internet time service interruption.
-sed -i 's/server ntp.ubuntu.com/ \
-server ntp.ubuntu.com \
-server 127.127.1.0 \
-fudge 127.127.1.0 stratum 10/g' /etc/ntp.conf
+# Cau hinh NTP trong ICEHOUSE
+# sed -i 's/server ntp.ubuntu.com/ \
+# server ntp.ubuntu.com \
+# server 127.127.1.0 \
+# fudge 127.127.1.0 stratum 10/g' /etc/ntp.conf
+
+## Cau hinh NTP trong JUNO
+sed -e 's/server ntp.ubuntu.com/ \
+server 0.vn.pool.ntp.org iburst \
+server 1.asia.pool.ntp.org iburst \
+server 2.asia.pool.ntp.org iburst/g' /etc/ntp.conf
+
+sed -e 's/restrict -4 default kod notrap nomodify nopeer noquery/ \
+#restrict -4 default kod notrap nomodify nopeer noquery/g' /etc/ntp.conf
+
+sed -e 's/restrict -6 default kod notrap nomodify nopeer noquery/ \
+restrict -4 default kod notrap nomodify \
+restrict -6 default kod notrap nomodify/g' /etc/ntp.conf
+
 
 echo "########## Khoi dong lai NTP ##########"
 sleep 3
