@@ -70,17 +70,23 @@ delayed_delete = False
 scrub_time = 43200
 scrubber_datadir = /var/lib/glance/scrubber
 image_cache_dir = /var/lib/glance/image-cache/
+
 [database]
 # sqlite_db = /var/lib/glance/glance.sqlite
 backend = sqlalchemy
 connection = mysql://glance:$MYSQL_PASS@$MASTER/glance
+
 [keystone_authtoken]
-auth_host = 127.0.0.1
-auth_port = 35357
-auth_protocol = http
+# auth_host = 127.0.0.1
+# auth_port = 35357
+# auth_protocol = http
+
+auth_uri = http://$MASTER:5000/v2.0
+identity_uri = http://$MASTER:35357
 admin_tenant_name = service
 admin_user = glance
 admin_password = $ADMIN_PASS
+
 [paste_deploy]
 flavor=keystone
 [store_type_location_strategy]
@@ -107,13 +113,18 @@ limit_param_default = 25
 [database]
 backend = sqlalchemy
 connection = mysql://glance:$MYSQL_PASS@$MASTER/glance
+
 [keystone_authtoken]
-auth_host = 127.0.0.1
-auth_port = 35357
-auth_protocol = http
+# auth_host = 127.0.0.1
+# auth_port = 35357
+# auth_protocol = http
+
+auth_uri = http://$MASTER:5000/v2.0
+identity_uri = http://$MASTER:35357
 admin_tenant_name = service
 admin_user = glance
 admin_password = $ADMIN_PASS
+
 [paste_deploy]
 flavor=keystone
 
