@@ -63,7 +63,7 @@ echo "########## Tao service KEYSTONE ##########"
 keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
 echo "########## Tao endpoint KEYSTONE ##########"
 keystone endpoint-create \
---region RegionOne \
+--region regionOne \
 --service-id=$(keystone service-list | awk '/ identity / {print $2}') \
 --publicurl=http://$MASTER:5000/v2.0 \
 --internalurl=http://$MASTER:5000/v2.0 \
@@ -73,7 +73,7 @@ echo "########## Tao service GLANCE ##########"
 keystone service-create --name=glance --type=image --description="OpenStack Image Service"
 echo "########## Tao endpoint GLANCE ##########"
 keystone endpoint-create \
---region RegionOne \
+--region regionOne \
 --service-id=$(keystone service-list | awk '/ image / {print $2}') \
 --publicurl=http://$MASTER:9292/v2 \
 --internalurl=http://$MASTER:9292/v2 \
@@ -83,7 +83,7 @@ echo "########## Tao service NOVA ##########"
 keystone service-create --name=nova --type=compute --description="OpenStack Compute"
 echo "########## Tao endpoint NOVA ##########"
 keystone endpoint-create \
---region RegionOne \
+--region regionOne \
 --service-id=$(keystone service-list | awk '/ compute / {print $2}') \
 --publicurl=http://$MASTER:8774/v2/%\(tenant_id\)s \
 --internalurl=http://$MASTER:8774/v2/%\(tenant_id\)s \
@@ -93,7 +93,7 @@ echo "########## Tao service NEUTRON ##########"
 keystone service-create --name neutron --type network --description "OpenStack Networking"
 echo "########## Tao endpoint NEUTRON ##########"
 keystone endpoint-create \
---region RegionOne \
+--region regionOne \
 --service-id $(keystone service-list | awk '/ network / {print $2}') --publicurl http://$MASTER:9696 \
 --adminurl http://$MASTER:9696 \
 --internalurl http://$MASTER:9696
@@ -102,7 +102,7 @@ echo "########## Tao service CINDER Version 1 ##########"
 keystone service-create --name=cinder --type=volume --description="OpenStack Block Storage"
 echo "########## Tao endpoint CINDER Version 1 ##########"
 keystone endpoint-create \
---region RegionOne \
+--region regionOne \
 --service-id=$(keystone service-list | awk '/ volume / {print $2}') \
 --publicurl=http://$MASTER:8776/v1/%\(tenant_id\)s \
 --internalurl=http://$MASTER:8776/v1/%\(tenant_id\)s \
@@ -112,7 +112,7 @@ echo "########## Tao service CINDER Version 2 ##########"
 keystone service-create --name=cinderv2 --type=volumev2 --description="OpenStack Block Storage v2"
 echo "########## Tao endpoint CINDER Version 2 ##########"
 keystone endpoint-create \
---region RegionOne \
+--region regionOne \
 --service-id=$(keystone service-list | awk '/ volumev2 / {print $2}') \
 --publicurl=http://$MASTER:8776/v2/%\(tenant_id\)s \
 --internalurl=http://$MASTER:8776/v2/%\(tenant_id\)s \

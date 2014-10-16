@@ -32,7 +32,7 @@ notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 nova_url = http://$MASTER:8774/v2
 nova_admin_auth_url = http://$MASTER:35357/v2.0
-nova_region_name = RegionOne
+nova_region_name = regionOne
 nova_admin_username = nova
 nova_admin_tenant_id = $SERVICE_ID
 nova_admin_password = $ADMIN_PASS
@@ -142,7 +142,7 @@ cat << EOF > $metadatafile
 [DEFAULT]
 verbose = True 
 auth_url = http://localhost:5000/v2.0
-auth_region = RegionOne
+auth_region = regionOne
 admin_tenant_name = service
 admin_user = neutron
 admin_password = $ADMIN_PASS
