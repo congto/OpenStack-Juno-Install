@@ -40,8 +40,8 @@ echo "########## Thu hien update he thong truoc khi cai dat ##########"
 # apt-get install ubuntu-cloud-keyring python-setuptools python-iniparse python-psutil -y
 # echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/juno main >> /etc/apt/sources.list.d/juno.list
 
-sudo apt-get install -y python-software-propertie -y
-sudo add-apt-repository ppa:openstack-ubuntu-testing/juno -y
+# sudo apt-get install -y python-software-propertie -y
+# sudo add-apt-repository ppa:openstack-ubuntu-testing/juno -y
 
 sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade 
 
